@@ -1,66 +1,64 @@
-# Minimal API em .NET - Registro de Veículos
+# API de Registro de Veículos (Minimal API)
 
-Projeto desenvolvido como parte do laboratório prático da DIO (Digital Innovation One) sobre criação de APIs modernas com **Minimal APIs**, **autenticação JWT** e **testes automatizados**.
+Projeto desenvolvido durante o bootcamp da DIO (Digital Innovation One) focado na criação de uma API utilizando o recurso de **Minimal APIs** do .NET, autenticação com **JWT** e testes.
 
 ## Sobre o projeto
 
-O objetivo foi construir uma API REST para gerenciamento e cadastro de veículos e administradores, utilizando a abordagem enxuta de Minimal APIs no .NET.
+A proposta do laboratório foi criar uma API para cadastro e gerenciamento de veículos e administradores. 
 
-A aplicação conta com controle de acesso baseado em perfis (Administrador e Editor) utilizando JSON Web Tokens (JWT), documentação interativa via Swagger e uma suíte de testes com MSTest.
+A aplicação conta com:
+- Autenticação e autorização via JWT, dividindo os acessos entre perfis de `Adm` e `Editor`.
+- Rotas para cadastro, listagem, atualização e remoção de veículos.
+- Documentação interativa via Swagger para testar as requisições enviando o token no cabeçalho `Authorization`.
+- Projeto separado de testes unitários e de integração utilizando MSTest e WebApplicationFactory.
 
-## Principais Funcionalidades
+## Estrutura da solução
 
-- **Autenticação com JWT**: Geração e validação de tokens com regras de permissão por perfil.
-- **Gestão de Administradores**: Cadastro, listagem e busca por ID com restrição de acesso apenas para o perfil Administrador.
-- **Gestão de Veículos**: CRUD completo (cadastro, listagem paginada, busca, atualização e exclusão).
-- **Documentação com Swagger**: Interface interativa configurada com suporte a envio do token Bearer.
-- **Testes Automatizados**: Testes de unidade e de integração para validar entidades, serviços e requisições HTTP.
+- `Api/`: Código-fonte principal da Minimal API, contendo DTOs, Entidades, Serviços, DbContext e configuração das rotas.
+- `Test/`: Testes automatizados cobrindo entidades, serviços e requisições HTTP.
 
-## Tecnologias utilizadas
+## Tecnologias
 
 - C# / .NET 8
-- ASP.NET Core (Minimal APIs)
-- Entity Framework Core / Pomelo MySQL
-- JWT Bearer Authentication
-- Swashbuckle (Swagger)
-- MSTest & Microsoft.AspNetCore.Mvc.Testing
+- ASP.NET Core Minimal APIs
+- Entity Framework Core / MySQL
+- Autenticação JWT Bearer
+- Swagger / OpenAPI
+- MSTest
 
-## Endpoints da API
+## Principais rotas
 
 ### Autenticação
-- `POST /administradores/login` - Realiza login e retorna o token JWT
+- `POST /administradores/login` - Faz login e gera o token JWT
 
-### Administradores (Requer perfil Adm)
-- `GET /administradores` - Lista todos os administradores cadastrados (paginado)
+### Administradores (apenas perfil Adm)
+- `GET /administradores` - Lista administradores
 - `GET /administradores/{id}` - Busca administrador por ID
-- `POST /administradores` - Cadastra um novo administrador
+- `POST /administradores` - Cadastra administrador
 
 ### Veículos
-- `GET /veiculos` - Lista veículos cadastrados (requer autenticação)
+- `GET /veiculos` - Lista veículos (requer autenticação)
 - `GET /veiculos/{id}` - Busca veículo por ID (requer autenticação)
-- `POST /veiculos` - Cadastra um novo veículo (requer perfil Adm ou Editor)
-- `PUT /veiculos/{id}` - Atualiza dados de um veículo (requer perfil Adm)
-- `DELETE /veiculos/{id}` - Remove um veículo (requer perfil Adm)
+- `POST /veiculos` - Cadastra veículo (requer Adm ou Editor)
+- `PUT /veiculos/{id}` - Atualiza veículo (requer Adm)
+- `DELETE /veiculos/{id}` - Remove veículo (requer Adm)
 
-## Como rodar o projeto
+## Como rodar localmente
 
-### Pré-requisitos
-- [.NET SDK 8](https://dotnet.microsoft.com/) instalado
-- Instância do MySQL ativa (ou ajuste a string de conexão no `appsettings.json`)
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/juliasd02/registro-veiculos-api.git
+   cd registro-veiculos-api
+   ```
 
-### Execução da API
-1. Entre na pasta da API e inicie o projeto:
+2. Para rodar a API:
    ```bash
    cd Api
    dotnet run
    ```
-2. Acesse a documentação do Swagger pelo navegador:
-   ```
-   http://localhost:5000/swagger
-   ```
+   Acesse a documentação no navegador: `http://localhost:5000/swagger`
 
-### Execução dos Testes
-Para rodar a suíte de testes:
-```bash
-dotnet test
-```
+3. Para rodar os testes:
+   ```bash
+   dotnet test
+   ```
